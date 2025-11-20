@@ -68,24 +68,28 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10">
-                <h2 className="text-2xl font-bold text-[#006A71]">{product.name}</h2>
+            <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center z-10">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#006A71] pr-2 line-clamp-2">
+                  {product.name.replace(/\d{6,}/g, '').replace(/\s{2,}/g, ' ').trim() || product.name}
+                </h2>
                 <button
                   onClick={onClose}
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                  className="text-gray-500 hover:text-gray-700 active:text-gray-900 transition-colors flex-shrink-0 touch-manipulation"
+                  aria-label="Chiudi"
                 >
-                  <X className="h-6 w-6" />
+                  <X className="h-5 w-5 sm:h-6 sm:w-6" />
                 </button>
               </div>
 
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 sm:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <img
                       src={product.image_url}
                       alt={product.name}
                       className="w-full h-auto rounded-lg object-cover"
+                      loading="lazy"
                       onError={(e) => {
                         e.currentTarget.src = 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=800';
                       }}
@@ -93,43 +97,48 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                   </div>
 
                   <div className="flex flex-col">
-                    <div className="mb-4">
-                      <span className="inline-block bg-[#9ACBD0] text-[#006A71] px-3 py-1 rounded-full text-sm font-semibold">
-                        {product.category}
+                    <div className="mb-3 sm:mb-4 flex flex-wrap gap-2">
+                      <span className="inline-block bg-[#9ACBD0] text-[#006A71] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                        {product.category?.startsWith('Ricambi - ') 
+                          ? product.category.replace('Ricambi - ', '')
+                          : product.category}
                       </span>
                       {product.in_stock && (
-                        <span className="ml-2 inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        <span className="inline-block bg-green-100 text-green-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                           Disponibile
                         </span>
                       )}
                     </div>
 
-                    <div className="mb-6">
-                      <p className="text-3xl font-bold text-[#006A71] mb-4">
+                    <div className="mb-4 sm:mb-6">
+                      <p className="text-2xl sm:text-3xl font-bold text-[#006A71] mb-3 sm:mb-4">
                         €{product.price.toLocaleString()}
                       </p>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">Descrizione</h3>
-                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Descrizione</h3>
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
                         {product.description}
                       </p>
                     </div>
 
-                    <div className="mt-auto space-y-3">
+                    <div className="mt-auto space-y-2 sm:space-y-3">
                       {(product.shopify_product_id || product.handle) ? (
-                        <ShopifyBuyButton
-                          productId={product.shopify_product_id}
-                          productHandle={product.handle}
-                          className="w-full"
-                        />
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <ShopifyBuyButton
+                            productId={product.shopify_product_id}
+                            productHandle={product.handle}
+                            className="w-full"
+                          />
+                        </div>
                       ) : (
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={handleAddToCart}
-                          className="w-full bg-[#006A71] hover:bg-[#48A6A7] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCart();
+                          }}
+                          className="w-full bg-[#006A71] hover:bg-[#48A6A7] active:bg-[#005a61] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors touch-manipulation"
                         >
                           Aggiungi al Carrello
-                        </motion.button>
+                        </button>
                       )}
                     </div>
                   </div>

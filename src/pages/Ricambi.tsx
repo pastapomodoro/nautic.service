@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import AnimatedCard from '../components/AnimatedCard';
 import ShopifyBuyButton from '../components/ShopifyBuyButton';
 import ProductModal from '../components/ProductModal';
-import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 
 type Product = {
@@ -95,45 +93,46 @@ export default function Ricambi() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
         {/* Search Bar */}
-        <div className="mb-8">
+        <div className="mb-4 sm:mb-6 md:mb-8">
           <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Cerca ricambi per nome, descrizione o categoria..."
+              placeholder="Cerca ricambi..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-300 focus:border-[#006A71] focus:outline-none text-lg"
+              className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 rounded-lg border-2 border-gray-300 focus:border-[#006A71] focus:outline-none text-sm sm:text-base md:text-lg"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 active:text-gray-800 touch-manipulation"
+                aria-label="Cancella ricerca"
               >
                 ✕
               </button>
             )}
           </div>
           {searchTerm && (
-            <p className="text-center mt-4 text-gray-600">
+            <p className="text-center mt-2 sm:mt-4 text-sm sm:text-base text-gray-600">
               Trovati {filteredProducts.length} ricambi per "{searchTerm}"
             </p>
           )}
         </div>
 
         {/* Category Filters */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-4 justify-center">
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+                className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-colors touch-manipulation ${
                   selectedCategory === category
                     ? 'bg-[#006A71] text-white'
-                    : 'bg-white text-[#006A71] hover:bg-[#9ACBD0]'
+                    : 'bg-white text-[#006A71] hover:bg-[#9ACBD0] active:bg-[#9ACBD0]'
                 }`}
               >
                 {category === 'all' ? 'Tutti' : category}
@@ -156,87 +155,90 @@ export default function Ricambi() {
           </div>
         ) : (
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {filteredProducts.map((product, index) => (
-                <AnimatedCard key={product.id} delay={index * 0.1}>
-                  <div 
-                    className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col cursor-pointer hover:shadow-xl transition-shadow"
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12">
+              {filteredProducts.map((product) => {
+                // Pulisci il nome prodotto rimuovendo codici e numeri eccessivi
+                const cleanName = product.name
+                  .replace(/\d{6,}/g, '') // Rimuove sequenze di 6+ numeri (probabili codici)
+                  .replace(/\s{2,}/g, ' ') // Rimuove spazi multipli
+                  .trim();
+                
+                return (
+                  <div
+                    key={product.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col cursor-pointer active:shadow-lg transition-shadow touch-manipulation"
                     onClick={() => {
                       setSelectedProduct(product);
                       setIsModalOpen(true);
                     }}
                   >
-                    <motion.div
-                      className="h-48 bg-cover bg-center overflow-hidden flex-shrink-0"
+                    <div
+                      className="h-40 sm:h-48 bg-cover bg-center overflow-hidden flex-shrink-0"
                       style={{ backgroundImage: `url(${product.image_url})` }}
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.3 }}
                     />
-                    <div className="p-6 flex flex-col flex-grow min-h-0">
-                      <div className="flex items-start justify-between mb-2 flex-shrink-0">
-                        <h3 className="text-lg font-bold text-[#006A71] line-clamp-2 flex-1 pr-2">{product.name}</h3>
+                    <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow min-h-0">
+                      <div className="flex items-start justify-between mb-1.5 sm:mb-2 flex-shrink-0">
+                        <h3 className="text-base sm:text-lg font-bold text-[#006A71] line-clamp-2 flex-1 pr-2">
+                          {cleanName || product.name}
+                        </h3>
                         {product.in_stock && (
-                          <motion.span
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded flex-shrink-0"
-                          >
-                            Disponibile
-                          </motion.span>
+                          <span className="bg-green-100 text-green-800 text-xs font-semibold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded flex-shrink-0">
+                            ✓
+                          </span>
                         )}
                       </div>
-                      <p className="text-xs text-gray-500 mb-2 flex-shrink-0">
+                      <p className="text-xs text-gray-500 mb-1.5 sm:mb-2 flex-shrink-0">
                         {product.category?.startsWith('Ricambi - ') 
                           ? product.category.replace('Ricambi - ', '')
                           : product.category === 'Ricambi' 
                           ? 'Altri'
                           : product.category || 'Altri'}
                       </p>
-                      <p className="text-sm text-gray-700 mb-4 line-clamp-2 flex-shrink-0 min-h-[2.5rem]">{product.description}</p>
-                      <div className="flex flex-col gap-3 mt-auto flex-shrink-0">
+                      <p className="text-xs sm:text-sm text-gray-700 mb-3 sm:mb-4 line-clamp-2 flex-shrink-0 min-h-[2rem] sm:min-h-[2.5rem]">
+                        {product.description}
+                      </p>
+                      <div className="flex flex-col gap-2 sm:gap-3 mt-auto flex-shrink-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-xl font-bold text-[#006A71]">
+                          <span className="text-lg sm:text-xl font-bold text-[#006A71]">
                             €{product.price.toLocaleString()}
                           </span>
                         </div>
                         {(product.shopify_product_id || (product as any).handle) ? (
-                          <ShopifyBuyButton 
-                            productId={product.shopify_product_id}
-                            productHandle={(product as any).handle}
-                            className="w-full"
-                          />
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <ShopifyBuyButton 
+                              productId={product.shopify_product_id}
+                              productHandle={(product as any).handle}
+                              className="w-full"
+                            />
+                          </div>
                         ) : (
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="bg-[#006A71] hover:bg-[#48A6A7] text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedProduct(product);
+                              setIsModalOpen(true);
+                            }}
+                            className="bg-[#006A71] hover:bg-[#48A6A7] active:bg-[#005a61] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-medium flex items-center justify-center gap-2 transition-colors touch-manipulation"
                           >
                             Acquista
-                          </motion.button>
+                          </button>
                         )}
                       </div>
                     </div>
                   </div>
-                </AnimatedCard>
-              ))}
+                );
+              })}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center bg-gradient-to-r from-[#48A6A7] to-[#006A71] rounded-lg p-8 text-white"
-            >
-              <h3 className="text-2xl font-bold mb-2">Non Trovi il Ricambio che Cerchi?</h3>
-              <p className="mb-6">Contattaci per una consulenza personalizzata o per ordini speciali</p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-[#006A71] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100"
+            <div className="text-center bg-gradient-to-r from-[#48A6A7] to-[#006A71] rounded-lg p-6 sm:p-8 text-white">
+              <h3 className="text-xl sm:text-2xl font-bold mb-2">Non Trovi il Ricambio che Cerchi?</h3>
+              <p className="mb-4 sm:mb-6 text-sm sm:text-base">Contattaci per una consulenza personalizzata o per ordini speciali</p>
+              <button
+                className="bg-white text-[#006A71] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 active:bg-gray-200 transition-colors touch-manipulation"
               >
                 Contattaci
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
           </div>
         )}
       </div>
