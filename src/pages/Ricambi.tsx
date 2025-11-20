@@ -79,7 +79,7 @@ export default function Ricambi() {
         className="relative h-[300px] bg-cover bg-center"
         style={{
           backgroundImage:
-            'url(https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+            'url(https://images.pexels.com/photos/1431823/pexels-photo-1431823.jpeg?auto=compress&cs=tinysrgb&w=1920)',
         }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
