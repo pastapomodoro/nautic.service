@@ -33,15 +33,20 @@ export default function Ricambi() {
       // Carica da JSON locale
       console.log('📦 Caricamento ricambi da file JSON locale...');
       const response = await fetch('/ricambi.json');
+      console.log('Response status:', response.status, response.statusText);
+      console.log('Response URL:', response.url);
+      
       if (response.ok) {
         const jsonData = await response.json();
+        console.log('✅ Dati caricati con successo:', jsonData.length, 'prodotti');
         setProducts(jsonData);
       } else {
-        console.warn('File ricambi.json non trovato');
+        console.warn('❌ File ricambi.json non trovato. Status:', response.status);
+        console.warn('Response text:', await response.text());
         setProducts([]);
       }
     } catch (error) {
-      console.error('Error loading products:', error);
+      console.error('❌ Error loading products:', error);
       setProducts([]);
     } finally {
       setLoading(false);
@@ -72,6 +77,16 @@ export default function Ricambi() {
       displayCategory.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  // Debug logging
+  useEffect(() => {
+    console.log('🔍 Debug Ricambi:');
+    console.log('- Prodotti totali:', products.length);
+    console.log('- Categoria selezionata:', selectedCategory);
+    console.log('- Termine di ricerca:', searchTerm);
+    console.log('- Prodotti filtrati:', filteredProducts.length);
+    console.log('- Categorie disponibili:', categories);
+  }, [products, selectedCategory, searchTerm, filteredProducts.length, categories]);
 
   return (
     <div className="bg-[#F2EFE7] min-h-screen">
@@ -172,10 +187,63 @@ export default function Ricambi() {
                       setIsModalOpen(true);
                     }}
                   >
-                    <div
-                      className="h-40 sm:h-48 bg-cover bg-center overflow-hidden flex-shrink-0"
-                      style={{ backgroundImage: `url(${product.image_url})` }}
-                    />
+                    <div className="h-56 sm:h-64 md:h-72 bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0 p-4 relative">
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="max-w-full max-h-full object-contain product-image-white-bg"
+                        crossOrigin="anonymous"
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          padding: '8px'
+                        }}
+                        onLoad={(e) => {
+                          const img = e.currentTarget;
+                          try {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                            if (!ctx) return;
+                            
+                            canvas.width = img.naturalWidth;
+                            canvas.height = img.naturalHeight;
+                            ctx.drawImage(img, 0, 0);
+                            
+                            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                            const data = imageData.data;
+                            
+                            for (let i = 0; i < data.length; i += 4) {
+                              const r = data[i];
+                              const g = data[i + 1];
+                              const b = data[i + 2];
+                              
+                              // Calcola la luminosità
+                              const brightness = (r + g + b) / 3;
+                              
+                              // Rimuovi pixel blu/verde scuri (blu dominante)
+                              if (b > r + 15 && b > g + 15) {
+                                // Se è blu dominante, rendilo bianco
+                                if (brightness < 200 || (b > r + 25 && b > g + 25)) {
+                                  data[i] = 255;     // R -> bianco
+                                  data[i + 1] = 255; // G -> bianco
+                                  data[i + 2] = 255; // B -> bianco
+                                }
+                              }
+                            }
+                            
+                            ctx.putImageData(imageData, 0, 0);
+                            img.src = canvas.toDataURL();
+                            img.style.mixBlendMode = 'normal';
+                            img.style.filter = 'none';
+                          } catch (error) {
+                            // Se c'è un errore CORS, usa solo il filtro CSS
+                            console.log('CORS error, using CSS filter only');
+                          }
+                        }}
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=800';
+                        }}
+                      />
+                    </div>
                     <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow min-h-0">
                       <div className="flex items-start justify-between mb-1.5 sm:mb-2 flex-shrink-0">
                         <h3 className="text-base sm:text-lg font-bold text-[#006A71] line-clamp-2 flex-1 pr-2">
