@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ShopifyBuyButton from '../components/ShopifyBuyButton';
 import ProductModal from '../components/ProductModal';
+import RicambiFilterMenu from '../components/RicambiFilterMenu';
 import { Search } from 'lucide-react';
 
 type Product = {
@@ -16,10 +17,50 @@ type Product = {
   handle?: string | null;
 };
 
+// Lista dei brand comuni da cercare nei nomi (ordinati dalla stringa più lunga alla più corta)
+const BRAND_KEYWORDS = [
+  'SEA DOO',
+  'SEA-DOO',
+  'MERCURISER',
+  'EVINRUDE',
+  'KAWASAKI',
+  'YAMAHA',
+  'JOHNSON',
+  'TOHATSU',
+  'CHAMPION',
+  'MERCURY',
+  'CUMMINS',
+  'YANMAR',
+  'SUZUKI',
+  'RECMAR',
+  'HONDA',
+  'VOLVO',
+  'BRP',
+  'NGK',
+];
+
+// Funzione per estrarre i brand dal nome del prodotto
+const extractBrands = (productName: string): string[] => {
+  const upperName = productName.toUpperCase();
+  const foundBrands: string[] = [];
+
+  BRAND_KEYWORDS.forEach((brand) => {
+    if (upperName.includes(brand)) {
+      const normalizedBrand = brand === 'SEA-DOO' ? 'SEA DOO' : brand;
+      if (!foundBrands.includes(normalizedBrand)) {
+        foundBrands.push(normalizedBrand);
+      }
+    }
+  });
+
+  return foundBrands;
+};
+
 export default function Ricambi() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [menuCategory, setMenuCategory] = useState<string | null>(null);
+  const [menuBrand, setMenuBrand] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,31 +106,56 @@ export default function Ricambi() {
     return category;
   };
 
-  const categories = ['all', ...Array.from(new Set(products.map((p) => getDisplayCategory(p.category))))];
+  // Handler per la navigazione del menu
+  const handleFilterChange = (category: string | null, brand: string | null) => {
+    setMenuCategory(category);
+    setMenuBrand(brand);
+  };
   
-  // Filtra per categoria e ricerca
+  // Filtra per categoria, brand e ricerca
   const filteredProducts = products.filter((p) => {
     const displayCategory = getDisplayCategory(p.category);
-    const matchesCategory = selectedCategory === 'all' || displayCategory === selectedCategory;
+    
+    // Filtro categoria (dal menu)
+    let matchesCategory = true;
+    if (menuCategory) {
+      matchesCategory = displayCategory === menuCategory;
+    }
+    
+    // Filtro brand (dal menu)
+    let matchesBrand = true;
+    if (menuBrand) {
+      const productBrands = extractBrands(p.name);
+      matchesBrand = productBrands.includes(menuBrand);
+    }
+    
+    // Filtro ricerca
     const matchesSearch = searchTerm === '' || 
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       displayCategory.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
+    
+    return matchesCategory && matchesBrand && matchesSearch;
   });
 
   // Debug logging
   useEffect(() => {
     console.log('🔍 Debug Ricambi:');
     console.log('- Prodotti totali:', products.length);
-    console.log('- Categoria selezionata:', selectedCategory);
+    console.log('- Categoria menu:', menuCategory);
+    console.log('- Brand menu:', menuBrand);
     console.log('- Termine di ricerca:', searchTerm);
     console.log('- Prodotti filtrati:', filteredProducts.length);
-    console.log('- Categorie disponibili:', categories);
-  }, [products, selectedCategory, searchTerm, filteredProducts.length, categories]);
+  }, [products, menuCategory, menuBrand, searchTerm, filteredProducts.length]);
 
   return (
     <div className="bg-[#F2EFE7] min-h-screen">
+      {/* Menu a tendina filtri */}
+      <RicambiFilterMenu 
+        products={products} 
+        onFilterChange={handleFilterChange}
+      />
+      
       <div
         className="relative h-[300px] bg-cover bg-center"
         style={{
@@ -137,24 +203,24 @@ export default function Ricambi() {
           )}
         </div>
 
-        {/* Category Filters */}
-        <div className="mb-4 sm:mb-6 md:mb-8">
-          <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-colors touch-manipulation ${
-                  selectedCategory === category
-                    ? 'bg-[#006A71] text-white'
-                    : 'bg-white text-[#006A71] hover:bg-[#9ACBD0] active:bg-[#9ACBD0]'
-                }`}
-              >
-                {category === 'all' ? 'Tutti' : category}
-              </button>
-            ))}
+        {/* Mostra selezione attiva dal menu */}
+        {(menuCategory || menuBrand) && (
+          <div className="mb-4 sm:mb-6 md:mb-8">
+            <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center items-center">
+              <span className="text-sm font-semibold text-gray-700">Visualizzando:</span>
+              {menuCategory && (
+                <span className="px-4 py-2 rounded-full bg-[#006A71] text-white text-sm font-semibold">
+                  {menuCategory}
+                </span>
+              )}
+              {menuBrand && (
+                <span className="px-4 py-2 rounded-full bg-[#48A6A7] text-white text-sm font-semibold">
+                  {menuBrand}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {loading ? (
           <div className="text-center py-12">
@@ -165,7 +231,9 @@ export default function Ricambi() {
             <p className="text-xl text-gray-600">
               {searchTerm 
                 ? `Nessun ricambio trovato per "${searchTerm}". Prova con altri termini.`
-                : 'Nessun ricambio disponibile al momento. Contattaci per maggiori informazioni.'}
+                : (menuCategory || menuBrand)
+                ? `Nessun ricambio trovato per la selezione corrente. Prova a cambiare tipo o brand dal menu.`
+                : 'Seleziona un tipo di ricambio e un brand dal menu per iniziare la ricerca.'}
             </p>
           </div>
         ) : (
