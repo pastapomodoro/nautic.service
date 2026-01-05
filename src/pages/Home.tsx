@@ -34,22 +34,32 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <div className="bg-[#F4F7F6]">
       <div
-        className="relative h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center"
+        className="relative h-[500px] sm:h-[700px] md:h-[900px] bg-cover bg-center"
         style={{
           backgroundImage:
             'url(https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=1920)',
         }}
       >
-        <div className="absolute inset-0 bg-black/70"></div>
-        <div className="relative h-full flex items-center justify-center text-center text-white px-4">
-          <div className="flex flex-col items-center max-w-2xl">
-            <div className="flex items-center justify-center mb-6 sm:mb-8">
-              <img 
-                src="/nautic.png" 
-                alt="Nautic Service Logo" 
-                className="h-32 sm:h-48 md:h-64 lg:h-80 w-auto"
-              />
-            </div>
+        <div className="static inset-0 bg-black/70" style={{ background: 'linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(255, 255, 255, 1) 100%)', opacity: 0 }}></div>
+        <div className="relative h-full flex flex-col items-center justify-center text-center text-white px-4" style={{ overflow: 'clip' }}>
+          <div className="absolute inset-0 flex items-center justify-center w-full h-full" style={{ overflow: 'clip' }}>
+            <img
+              src="/nautic.png"
+              alt="Nautic Service Logo"
+              className="w-full h-full object-contain"
+              style={{ 
+                overflow: 'clip',
+                marginTop: '0px',
+                marginBottom: '0px',
+                paddingLeft: '0px',
+                paddingRight: '0px',
+                paddingTop: '0px',
+                paddingBottom: '0px',
+                boxSizing: 'content-box'
+              }}
+            />
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 w-full flex justify-center pb-8 sm:pb-12 md:pb-16 z-10">
             <button
               onClick={() => onNavigate('vendita')}
               className="text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition-all touch-manipulation"
