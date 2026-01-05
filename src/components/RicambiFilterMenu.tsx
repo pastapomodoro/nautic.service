@@ -125,13 +125,13 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
       {/* Pulsante per aprire il menu */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed left-2 sm:left-4 top-20 z-[60] bg-[#0088AA] text-white p-2.5 sm:p-3 rounded-lg shadow-lg hover:bg-[#00D9CC] active:bg-[#0088AA] transition-colors flex items-center gap-2 touch-manipulation"
+        className="fixed left-2 sm:left-4 top-28 sm:top-32 z-[60] bg-[#00D9CC] text-[#0E0E0E] p-2.5 sm:p-3 rounded-lg shadow-lg hover:bg-[#1FA9A0] active:bg-[#00D9CC] transition-colors flex items-center gap-2 touch-manipulation"
         aria-label="Apri menu ricambi"
       >
         <Menu className="h-5 w-5" />
         <span className="hidden sm:inline text-sm font-medium">Menu</span>
         {(selectedCategory || selectedBrand) && (
-          <span className="bg-white text-[#0E0E0E] rounded-full px-2 py-0.5 text-xs font-bold min-w-[20px] text-center">
+          <span className="bg-[#0E0E0E] text-white rounded-full px-2 py-0.5 text-xs font-bold min-w-[20px] text-center">
             {(selectedCategory ? 1 : 0) + (selectedBrand ? 1 : 0)}
           </span>
         )}
@@ -165,7 +165,7 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                 selectedCategory ? 'w-[50%]' : 'w-full'
               }`}>
                 {/* Header */}
-                <div className="sticky top-0 bg-[#0088AA] text-white p-4 flex items-center justify-between z-10">
+                <div className="sticky top-0 bg-[#00D9CC] text-[#0E0E0E] p-4 flex items-center justify-between z-10">
                   <div className="flex items-center gap-2">
                     {selectedCategory && (
                       <button
@@ -201,8 +201,8 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                           onClick={() => handleCategorySelect(category)}
                           className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center justify-between ${
                             isSelected
-                              ? 'bg-[#0088AA] text-white'
-                              : 'bg-gray-50 hover:bg-[#00D9CC] text-[#0E0E0E]'
+                              ? 'bg-[#00D9CC] text-[#0E0E0E] font-semibold'
+                              : 'bg-gray-50 hover:bg-[#00D9CC]/30 text-[#0E0E0E]'
                           }`}
                         >
                           <span className="font-medium">{category}</span>
@@ -242,8 +242,8 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                               onClick={() => handleBrandSelect(brand)}
                               className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
                                 isSelected
-                                  ? 'bg-[#0088AA] text-white font-semibold'
-                                  : 'bg-gray-50 hover:bg-[#00D9CC] text-[#0E0E0E]'
+                                  ? 'bg-[#00D9CC] text-[#0E0E0E] font-semibold'
+                                  : 'bg-gray-50 hover:bg-[#00D9CC]/30 text-[#0E0E0E]'
                               }`}
                             >
                               {brand}

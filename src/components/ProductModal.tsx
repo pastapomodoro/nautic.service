@@ -23,10 +23,10 @@ type ProductModalProps = {
 };
 
 // Componente per gestire il caricamento delle immagini con fallback per prefissi numerici
-// Usa SOLO immagini dalla cartella ricambi-images, senza fallback a Shopify
+// Usa SOLO immagini dalla cartella ricambi-images o moto, senza fallback a Shopify
 const LocalImageWithFallback = ({ shopifyUrl, alt, className }: { shopifyUrl: string; alt: string; className: string }) => {
-  // Se il percorso è già locale, usalo direttamente
-  if (shopifyUrl && shopifyUrl.startsWith('/ricambi-images/')) {
+  // Se il percorso è già locale (ricambi-images o moto), usalo direttamente
+  if (shopifyUrl && (shopifyUrl.startsWith('/ricambi-images/') || shopifyUrl.startsWith('/moto/'))) {
     return (
       <img
         src={shopifyUrl}
@@ -195,7 +195,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     <LocalImageWithFallback
                       shopifyUrl={product.image_url}
                       alt={product.name}
-                      className="w-full h-auto rounded-lg object-cover"
+                      className="w-full h-auto rounded-lg object-contain max-h-[500px]"
                     />
                   </div>
 
@@ -236,11 +236,11 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleAddToCart();
+                            window.location.href = `mailto:preventivo@nautic-service.it?subject=Richiesta Preventivo - ${product.name}&body=Salve,%0D%0A%0D%0AVorrei ricevere un preventivo per: ${product.name}%0D%0APrezzo indicativo: €${product.price.toLocaleString()}%0D%0A%0D%0ACordiali saluti`;
                           }}
                           className="w-full bg-[#00D9CC] hover:bg-[#1FA9A0] active:bg-[#1FA9A0] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors touch-manipulation"
                         >
-                          Aggiungi al Carrello
+                          Richiedi Preventivo
                         </button>
                       )}
                     </div>

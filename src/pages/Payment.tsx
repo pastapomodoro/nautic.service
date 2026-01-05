@@ -317,7 +317,7 @@ export default function Payment({ onNavigate }: PaymentProps) {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-16 h-16 object-cover rounded"
+                      className="w-16 h-16 object-contain rounded bg-gray-100"
                     />
                     <div className="flex-1">
                       <p className="font-semibold text-[#0E0E0E] text-sm">{item.name}</p>

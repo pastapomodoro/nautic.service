@@ -204,7 +204,7 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
                     <img
                       src={item.image_url}
                       alt={item.name}
-                      className="w-24 h-24 object-cover rounded-lg"
+                      className="w-24 h-24 object-contain rounded-lg bg-gray-100"
                       onError={(e) => {
                         e.currentTarget.src = 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=200';
                       }}

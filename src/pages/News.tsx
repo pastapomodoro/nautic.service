@@ -127,10 +127,13 @@ export default function News() {
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl active:shadow-lg transition-shadow cursor-pointer touch-manipulation"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                  <div
-                    className="h-48 sm:h-56 md:h-64 lg:h-80 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${articles[0].image_url})` }}
-                  />
+                  <div className="h-48 sm:h-56 md:h-64 lg:h-80 bg-gray-100 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={articles[0].image_url}
+                      alt={articles[0].title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <div className="p-4 sm:p-6 md:p-8 flex flex-col justify-center">
                     <div className="flex items-center text-[#6B6F72] text-xs sm:text-sm mb-2 sm:mb-3">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
@@ -158,10 +161,13 @@ export default function News() {
                   onClick={() => setSelectedArticle(article)}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl active:shadow-lg transition-shadow cursor-pointer h-full flex flex-col touch-manipulation"
                 >
-                  <div
-                    className="h-40 sm:h-48 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${article.image_url})` }}
-                  />
+                  <div className="h-40 sm:h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={article.image_url}
+                      alt={article.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
                     <div className="flex items-center text-[#6B6F72] text-xs sm:text-sm mb-2">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />

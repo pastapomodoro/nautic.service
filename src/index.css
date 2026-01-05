@@ -82,3 +82,78 @@ div:has(> img[src^="/ricambi-images/"]) {
   background-color: #F4F7F6 !important;
   background: #F4F7F6 !important;
 }
+
+/* Ottimizzazioni immagini per mobile */
+@media (max-width: 768px) {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Assicura che le immagini non vengano croppate */
+  .object-contain {
+    object-fit: contain !important;
+  }
+  
+  /* Contenitori immagini responsive */
+  div[class*="h-"] img {
+    max-height: 100%;
+    width: auto;
+  }
+  
+  /* Card immagini responsive */
+  .bg-gray-100 img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  /* Grid responsive per card prodotti */
+  .grid img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Animazioni per il menu dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -101,10 +101,13 @@ export default function Accessori() {
                 key={accessory.id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
               >
-                <div
-                  className="h-48 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${accessory.image_url})` }}
-                ></div>
+                <div className="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={accessory.image_url}
+                    alt={accessory.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="text-lg font-bold text-[#0E0E0E] line-clamp-2">
