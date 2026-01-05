@@ -4,15 +4,8 @@ export default function Footer() {
   return (
     <footer className="bg-[#0088AA] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <div className="flex items-center mb-4">
-              <img 
-                src="/nautic.png" 
-                alt="Nautic Service Logo" 
-                className="h-12 w-auto"
-              />
-            </div>
             <p className="text-sm text-gray-200">
               Il tuo partner di fiducia per barche, moto d'acqua e servizi nautici.
             </p>

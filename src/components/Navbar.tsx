@@ -29,7 +29,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             <img
               src="/nautic.png"
               alt="Nautic Service Logo"
-              className="h-32 w-auto"
+              className="h-16 sm:h-20 md:h-24 lg:h-32 w-auto"
             />
           </div>
 

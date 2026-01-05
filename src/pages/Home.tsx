@@ -49,11 +49,11 @@ export default function Home({ onNavigate }: HomeProps) {
         {/* Contenuto */}
         <div className="relative h-full flex flex-col items-center justify-center text-center text-white px-4 z-10">
           {/* Logo */}
-          <div className="flex items-center justify-center mb-8 animate-[fadeIn_1.5s_ease-out_forwards] opacity-0" style={{ animationDelay: '0.3s' }}>
+          <div className="flex items-center justify-center mb-8 animate-[fadeIn_1.5s_ease-out_forwards] opacity-0 px-4" style={{ animationDelay: '0.3s' }}>
             <img
               src="/nautic.png"
               alt="Nautic Service Logo"
-              className="w-full max-w-4xl h-auto object-contain"
+              className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl h-auto object-contain"
             />
           </div>
         </div>
