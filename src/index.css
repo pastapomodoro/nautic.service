@@ -5,7 +5,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #F2EFE7;
+  background-color: #F4F7F6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,4 +31,54 @@ button, a {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Rimuovi sfondi dalle immagini di ricambi */
+img[src*="/ricambi-images/"],
+img[src^="/ricambi-images/"],
+img[src*="ricambi-images"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  /* Forza il rendering senza sfondo */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* Rimuovi qualsiasi filtro o effetto */
+  filter: none !important;
+  -webkit-filter: none !important;
+  /* Isola il contesto di rendering */
+  isolation: isolate;
+  mix-blend-mode: normal;
+}
+
+/* Rimuovi sfondi dai contenitori delle immagini di ricambi */
+div:has(img[src*="/ricambi-images/"]),
+div:has(img[src^="/ricambi-images/"]),
+div:has(img[src*="ricambi-images"]) {
+  background-color: #F4F7F6 !important;
+  background: #F4F7F6 !important;
+  background-image: none !important;
+}
+
+/* Forza trasparenza su tutti gli elementi che contengono immagini di ricambi */
+[class*="ricambi"] img,
+[class*="product"] img {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Rimuovi qualsiasi overlay o pseudo-elemento */
+img[src*="/ricambi-images/"]::before,
+img[src*="/ricambi-images/"]::after,
+img[src^="/ricambi-images/"]::before,
+img[src^="/ricambi-images/"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Rimuovi sfondi da tutti i parent delle immagini */
+div:has(> img[src*="/ricambi-images/"]),
+div:has(> img[src^="/ricambi-images/"]) {
+  background-color: #F4F7F6 !important;
+  background: #F4F7F6 !important;
 }

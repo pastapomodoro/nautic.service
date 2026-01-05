@@ -9,6 +9,7 @@ import Ricambi from './pages/Ricambi';
 import News from './pages/News';
 import Payment from './pages/Payment';
 import Checkout from './pages/Checkout';
+import Contatti from './pages/Contatti';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -32,6 +33,8 @@ function App() {
         return <Ricambi />;
       case 'news':
         return <News />;
+      case 'contatti':
+        return <Contatti />;
       case 'payment':
         return <Payment onNavigate={handleNavigate} />;
       case 'checkout':
@@ -42,7 +45,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F2EFE7]">
+    <div className="min-h-screen flex flex-col bg-[#F4F7F6]">
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
       <main className="flex-grow">{renderPage()}</main>
       <Footer />

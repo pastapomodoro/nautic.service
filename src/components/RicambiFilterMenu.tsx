@@ -125,13 +125,13 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
       {/* Pulsante per aprire il menu */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed left-2 sm:left-4 top-20 z-[60] bg-[#006A71] text-white p-2.5 sm:p-3 rounded-lg shadow-lg hover:bg-[#48A6A7] active:bg-[#005a61] transition-colors flex items-center gap-2 touch-manipulation"
+        className="fixed left-2 sm:left-4 top-20 z-[60] bg-[#0088AA] text-white p-2.5 sm:p-3 rounded-lg shadow-lg hover:bg-[#00D9CC] active:bg-[#0088AA] transition-colors flex items-center gap-2 touch-manipulation"
         aria-label="Apri menu ricambi"
       >
         <Menu className="h-5 w-5" />
         <span className="hidden sm:inline text-sm font-medium">Menu</span>
         {(selectedCategory || selectedBrand) && (
-          <span className="bg-white text-[#006A71] rounded-full px-2 py-0.5 text-xs font-bold min-w-[20px] text-center">
+          <span className="bg-white text-[#0E0E0E] rounded-full px-2 py-0.5 text-xs font-bold min-w-[20px] text-center">
             {(selectedCategory ? 1 : 0) + (selectedBrand ? 1 : 0)}
           </span>
         )}
@@ -165,12 +165,12 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                 selectedCategory ? 'w-[50%]' : 'w-full'
               }`}>
                 {/* Header */}
-                <div className="sticky top-0 bg-[#006A71] text-white p-4 flex items-center justify-between z-10">
+                <div className="sticky top-0 bg-[#0088AA] text-white p-4 flex items-center justify-between z-10">
                   <div className="flex items-center gap-2">
                     {selectedCategory && (
                       <button
                         onClick={handleReset}
-                        className="p-1 hover:bg-[#48A6A7] rounded transition-colors"
+                        className="p-1 hover:bg-[#00D9CC] rounded transition-colors"
                         aria-label="Torna indietro"
                       >
                         <ChevronRight className="h-5 w-5 rotate-180" />
@@ -180,7 +180,7 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                   </div>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="p-1 hover:bg-[#48A6A7] rounded transition-colors"
+                    className="p-1 hover:bg-[#00D9CC] rounded transition-colors"
                     aria-label="Chiudi menu"
                   >
                     <X className="h-6 w-6" />
@@ -189,7 +189,7 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
 
                 {/* Contenuto Categorie */}
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-[#006A71] mb-3">
+                  <h3 className="text-lg font-semibold text-[#0E0E0E] mb-3">
                     Tipo di Ricambio
                   </h3>
                   <div className="space-y-2">
@@ -201,8 +201,8 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                           onClick={() => handleCategorySelect(category)}
                           className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center justify-between ${
                             isSelected
-                              ? 'bg-[#006A71] text-white'
-                              : 'bg-gray-50 hover:bg-[#9ACBD0] text-gray-700'
+                              ? 'bg-[#0088AA] text-white'
+                              : 'bg-gray-50 hover:bg-[#00D9CC] text-[#0E0E0E]'
                           }`}
                         >
                           <span className="font-medium">{category}</span>
@@ -225,7 +225,7 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                   className="flex-shrink-0 w-[50%] overflow-y-auto"
                 >
                   {/* Header Brand */}
-                  <div className="sticky top-0 bg-[#48A6A7] text-white p-4 z-10">
+                  <div className="sticky top-0 bg-[#00D9CC] text-white p-4 z-10">
                     <h3 className="text-lg font-semibold">Brand</h3>
                     <p className="text-sm opacity-90 mt-1">{selectedCategory}</p>
                   </div>
@@ -242,8 +242,8 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                               onClick={() => handleBrandSelect(brand)}
                               className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
                                 isSelected
-                                  ? 'bg-[#006A71] text-white font-semibold'
-                                  : 'bg-gray-50 hover:bg-[#9ACBD0] text-gray-700'
+                                  ? 'bg-[#0088AA] text-white font-semibold'
+                                  : 'bg-gray-50 hover:bg-[#00D9CC] text-[#0E0E0E]'
                               }`}
                             >
                               {brand}
@@ -253,7 +253,7 @@ export default function RicambiFilterMenu({ products, onFilterChange }: RicambiF
                       </div>
                     ) : (
                       <div className="text-center py-8">
-                        <p className="text-gray-500 text-sm">
+                        <p className="text-[#6B6F72] text-sm">
                           Nessun brand disponibile per questa categoria
                         </p>
                       </div>

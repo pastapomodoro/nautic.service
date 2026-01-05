@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import ShopifyBuyButton from '../components/ShopifyBuyButton';
+import React from 'react';
 import ProductModal from '../components/ProductModal';
 import RicambiFilterMenu from '../components/RicambiFilterMenu';
 import { Search } from 'lucide-react';
@@ -54,6 +54,108 @@ const extractBrands = (productName: string): string[] => {
   });
 
   return foundBrands;
+};
+
+// Componente per gestire il caricamento delle immagini con fallback per prefissi numerici
+// Usa SOLO immagini dalla cartella ricambi-images, senza fallback a Shopify
+const LocalImageWithFallback = ({ shopifyUrl, alt, className, style }: { shopifyUrl: string; alt: string; className: string; style?: React.CSSProperties }) => {
+  // Se il percorso è già locale, usalo direttamente
+  if (shopifyUrl && shopifyUrl.startsWith('/ricambi-images/')) {
+    return (
+      <img
+        src={shopifyUrl}
+        alt={alt}
+        className={className}
+        style={{ 
+          background: 'transparent', 
+          backgroundColor: 'transparent',
+          backgroundImage: 'none',
+          filter: 'none',
+          isolation: 'isolate',
+          mixBlendMode: 'normal',
+          ...style 
+        }}
+      />
+    );
+  }
+
+  // Altrimenti, estrai il nome del file dall'URL Shopify e cerca nella cartella locale
+  const extractFileName = (url: string): string => {
+    if (!url) return '';
+    
+    // Se è già un percorso locale
+    if (url.startsWith('/ricambi-images/')) {
+      return url.replace('/ricambi-images/', '');
+    }
+    
+    // Estrai da URL Shopify
+    const urlMatch = url.match(/\/files\/[^\/]+\/([^?]+)/);
+    if (urlMatch) {
+      return urlMatch[1];
+    }
+    
+    // Fallback: prendi l'ultima parte dell'URL
+    const fileName = url.split('/').pop()?.split('?')[0] || '';
+    return fileName;
+  };
+
+  const fileName = extractFileName(shopifyUrl);
+  const [currentSrc, setCurrentSrc] = useState<string>('');
+  const [attempt, setAttempt] = useState<number>(0);
+  const maxAttempts = 300;
+
+  // Calcola il percorso dell'immagine basato sul tentativo corrente
+  const getImagePath = React.useCallback((currentAttempt: number): string => {
+    if (!fileName) return '';
+    
+    if (currentAttempt === 0) {
+      return `/ricambi-images/${fileName}`;
+    } else if (currentAttempt <= maxAttempts) {
+      return `/ricambi-images/${currentAttempt}-${fileName}`;
+    }
+    return '';
+  }, [fileName, maxAttempts]);
+
+  // Inizializza con il primo tentativo
+  useEffect(() => {
+    if (fileName) {
+      const initialPath = getImagePath(0);
+      setCurrentSrc(initialPath);
+      setAttempt(0);
+    }
+  }, [fileName, getImagePath]);
+
+  const handleError = () => {
+    const nextAttempt = attempt + 1;
+    if (nextAttempt <= maxAttempts) {
+      const nextPath = getImagePath(nextAttempt);
+      setCurrentSrc(nextPath);
+      setAttempt(nextAttempt);
+    }
+  };
+
+  if (!fileName || !currentSrc) {
+    return null;
+  }
+
+  return (
+    <img
+      key={`img-${fileName}-${attempt}`}
+      src={currentSrc}
+      alt={alt}
+      className={className}
+      onError={handleError}
+      style={{ 
+        background: 'transparent', 
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        filter: 'none',
+        isolation: 'isolate',
+        mixBlendMode: 'normal',
+        ...style 
+      }}
+    />
+  );
 };
 
 export default function Ricambi() {
@@ -149,7 +251,7 @@ export default function Ricambi() {
   }, [products, menuCategory, menuBrand, searchTerm, filteredProducts.length]);
 
   return (
-    <div className="bg-[#F2EFE7] min-h-screen">
+    <div className="bg-[#F4F7F6] min-h-screen">
       {/* Menu a tendina filtri */}
       <RicambiFilterMenu 
         products={products} 
@@ -163,7 +265,7 @@ export default function Ricambi() {
             'url(https://images.pexels.com/photos/4488662/pexels-photo-4488662.jpeg?auto=compress&cs=tinysrgb&w=1920)',
         }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/70"></div>
         <div className="relative h-full flex items-center justify-center text-center text-white px-4">
           <div>
             <h1 className="text-5xl md:text-6xl font-bold">Ricambi</h1>
@@ -184,12 +286,12 @@ export default function Ricambi() {
               placeholder="Cerca ricambi..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 rounded-lg border-2 border-gray-300 focus:border-[#006A71] focus:outline-none text-sm sm:text-base md:text-lg"
+              className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 rounded-lg border-2 border-gray-300 focus:border-[#00D9CC] focus:outline-none text-sm sm:text-base md:text-lg"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 active:text-gray-800 touch-manipulation"
+                className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#6B6F72] active:text-gray-800 touch-manipulation"
                 aria-label="Cancella ricerca"
               >
                 ✕
@@ -197,7 +299,7 @@ export default function Ricambi() {
             )}
           </div>
           {searchTerm && (
-            <p className="text-center mt-2 sm:mt-4 text-sm sm:text-base text-gray-600">
+            <p className="text-center mt-2 sm:mt-4 text-sm sm:text-base text-[#6B6F72]">
               Trovati {filteredProducts.length} ricambi per "{searchTerm}"
             </p>
           )}
@@ -209,12 +311,12 @@ export default function Ricambi() {
             <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center items-center">
               <span className="text-sm font-semibold text-gray-700">Visualizzando:</span>
               {menuCategory && (
-                <span className="px-4 py-2 rounded-full bg-[#006A71] text-white text-sm font-semibold">
+                <span className="px-4 py-2 rounded-full bg-[#00D9CC] text-white text-sm font-semibold">
                   {menuCategory}
                 </span>
               )}
               {menuBrand && (
-                <span className="px-4 py-2 rounded-full bg-[#48A6A7] text-white text-sm font-semibold">
+                <span className="px-4 py-2 rounded-full bg-[#00D9CC] text-white text-sm font-semibold">
                   {menuBrand}
                 </span>
               )}
@@ -224,11 +326,11 @@ export default function Ricambi() {
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#006A71]"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#00D9CC]"></div>
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow-lg">
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-[#6B6F72]">
               {searchTerm 
                 ? `Nessun ricambio trovato per "${searchTerm}". Prova con altri termini.`
                 : (menuCategory || menuBrand)
@@ -255,19 +357,28 @@ export default function Ricambi() {
                       setIsModalOpen(true);
                     }}
                   >
-                    <div className="h-40 sm:h-48 bg-white flex items-center justify-center overflow-hidden flex-shrink-0 p-4">
-                      <img
-                        src={product.image_url}
+                    <div 
+                      className="h-40 sm:h-48 flex items-center justify-center overflow-hidden flex-shrink-0 p-4" 
+                      style={{ 
+                        backgroundColor: '#F4F7F6',
+                        background: '#F4F7F6',
+                        backgroundImage: 'none',
+                        isolation: 'isolate'
+                      }}
+                    >
+                      <LocalImageWithFallback
+                        shopifyUrl={product.image_url}
                         alt={product.name}
                         className="max-w-full max-h-full object-contain"
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=800';
+                        style={{
+                          mixBlendMode: 'normal',
+                          isolation: 'isolate'
                         }}
                       />
                     </div>
                     <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow min-h-0">
                       <div className="flex items-start justify-between mb-1.5 sm:mb-2 flex-shrink-0">
-                        <h3 className="text-base sm:text-lg font-bold text-[#006A71] line-clamp-2 flex-1 pr-2">
+                        <h3 className="text-base sm:text-lg font-bold text-[#0E0E0E] line-clamp-2 flex-1 pr-2">
                           {cleanName || product.name}
                         </h3>
                         {product.in_stock && (
@@ -288,7 +399,7 @@ export default function Ricambi() {
                       </p>
                       <div className="flex flex-col gap-2 sm:gap-3 mt-auto flex-shrink-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-lg sm:text-xl font-bold text-[#006A71]">
+                          <span className="text-lg sm:text-xl font-bold text-[#0E0E0E]">
                             €{product.price.toLocaleString()}
                           </span>
                         </div>
@@ -298,7 +409,7 @@ export default function Ricambi() {
                             setSelectedProduct(product);
                             setIsModalOpen(true);
                           }}
-                          className="bg-[#006A71] hover:bg-[#48A6A7] active:bg-[#005a61] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-medium flex items-center justify-center gap-2 transition-colors touch-manipulation w-full"
+                          className="bg-[#00D9CC] hover:bg-[#1FA9A0] active:bg-[#1FA9A0] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-medium flex items-center justify-center gap-2 transition-colors touch-manipulation w-full"
                         >
                           Acquista
                         </button>
@@ -309,11 +420,11 @@ export default function Ricambi() {
               })}
             </div>
 
-            <div className="text-center bg-gradient-to-r from-[#48A6A7] to-[#006A71] rounded-lg p-6 sm:p-8 text-white">
+            <div className="text-center bg-gradient-to-r from-[#00D9CC] to-[#9BE870] rounded-lg p-6 sm:p-8 text-white">
               <h3 className="text-xl sm:text-2xl font-bold mb-2">Non Trovi il Ricambio che Cerchi?</h3>
               <p className="mb-4 sm:mb-6 text-sm sm:text-base">Contattaci per una consulenza personalizzata o per ordini speciali</p>
               <button
-                className="bg-white text-[#006A71] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 active:bg-gray-200 transition-colors touch-manipulation"
+                className="bg-white text-[#0E0E0E] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-[#F4F7F6] active:bg-[#9BE870]/20 transition-colors touch-manipulation"
               >
                 Contattaci
               </button>

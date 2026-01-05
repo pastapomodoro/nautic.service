@@ -2,7 +2,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#006A71] text-white">
+    <footer className="bg-[#0088AA] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -23,15 +23,19 @@ export default function Footer() {
             <div className="space-y-2">
               <div className="flex items-center text-sm">
                 <Phone className="h-4 w-4 mr-2" />
-                <span>+39 123 456 7890</span>
+                <a href="tel:+393278992159" className="hover:underline">+39 327.8992159</a>
+              </div>
+              <div className="flex items-center text-sm">
+                <Phone className="h-4 w-4 mr-2" />
+                <a href="tel:+393478239844" className="hover:underline">+39 347.8239844</a>
               </div>
               <div className="flex items-center text-sm">
                 <Mail className="h-4 w-4 mr-2" />
-                <span>info@nauticservice.it</span>
+                <a href="mailto:info@nautic-service.it" className="hover:underline">info@nautic-service.it</a>
               </div>
               <div className="flex items-center text-sm">
                 <MapPin className="h-4 w-4 mr-2" />
-                <span>Via del Mare, 123 - Italia</span>
+                <span>Via Venezia 9, Castelnuovo del Garda (VR)</span>
               </div>
             </div>
           </div>
@@ -49,14 +53,13 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Orari</h3>
             <ul className="space-y-2 text-sm">
-              <li>Lun - Ven: 9:00 - 18:00</li>
-              <li>Sabato: 9:00 - 13:00</li>
+              <li>Lun - Sab: 8.30 - 12.30 e 14 - 18</li>
               <li>Domenica: Chiuso</li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-[#48A6A7] mt-8 pt-8 text-center text-sm">
+        <div className="border-t border-[#00D9CC] mt-8 pt-8 text-center text-sm">
           <p>&copy; 2025 Nautic Service. Tutti i diritti riservati.</p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShopifyBuyButton from './ShopifyBuyButton';
@@ -20,6 +20,106 @@ type ProductModalProps = {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
+};
+
+// Componente per gestire il caricamento delle immagini con fallback per prefissi numerici
+// Usa SOLO immagini dalla cartella ricambi-images, senza fallback a Shopify
+const LocalImageWithFallback = ({ shopifyUrl, alt, className }: { shopifyUrl: string; alt: string; className: string }) => {
+  // Se il percorso è già locale, usalo direttamente
+  if (shopifyUrl && shopifyUrl.startsWith('/ricambi-images/')) {
+    return (
+      <img
+        src={shopifyUrl}
+        alt={alt}
+        className={className}
+        style={{ 
+          background: 'transparent', 
+          backgroundColor: 'transparent',
+          backgroundImage: 'none',
+          filter: 'none',
+          isolation: 'isolate',
+          mixBlendMode: 'normal'
+        }}
+      />
+    );
+  }
+
+  // Altrimenti, estrai il nome del file dall'URL Shopify e cerca nella cartella locale
+  const extractFileName = (url: string): string => {
+    if (!url) return '';
+    
+    // Se è già un percorso locale
+    if (url.startsWith('/ricambi-images/')) {
+      return url.replace('/ricambi-images/', '');
+    }
+    
+    // Estrai da URL Shopify
+    const urlMatch = url.match(/\/files\/[^\/]+\/([^?]+)/);
+    if (urlMatch) {
+      return urlMatch[1];
+    }
+    
+    // Fallback: prendi l'ultima parte dell'URL
+    const fileName = url.split('/').pop()?.split('?')[0] || '';
+    return fileName;
+  };
+
+  const fileName = extractFileName(shopifyUrl);
+  const [currentSrc, setCurrentSrc] = useState<string>('');
+  const [attempt, setAttempt] = useState<number>(0);
+  const maxAttempts = 300;
+
+  // Calcola il percorso dell'immagine basato sul tentativo corrente
+  const getImagePath = React.useCallback((currentAttempt: number): string => {
+    if (!fileName) return '';
+    
+    if (currentAttempt === 0) {
+      return `/ricambi-images/${fileName}`;
+    } else if (currentAttempt <= maxAttempts) {
+      return `/ricambi-images/${currentAttempt}-${fileName}`;
+    }
+    return '';
+  }, [fileName, maxAttempts]);
+
+  // Inizializza con il primo tentativo
+  useEffect(() => {
+    if (fileName) {
+      const initialPath = getImagePath(0);
+      setCurrentSrc(initialPath);
+      setAttempt(0);
+    }
+  }, [fileName, getImagePath]);
+
+  const handleError = () => {
+    const nextAttempt = attempt + 1;
+    if (nextAttempt <= maxAttempts) {
+      const nextPath = getImagePath(nextAttempt);
+      setCurrentSrc(nextPath);
+      setAttempt(nextAttempt);
+    }
+  };
+
+  if (!fileName || !currentSrc) {
+    return null;
+  }
+
+  return (
+    <img
+      key={`img-${fileName}-${attempt}`}
+      src={currentSrc}
+      alt={alt}
+      className={className}
+      onError={handleError}
+      style={{ 
+        background: 'transparent', 
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        filter: 'none',
+        isolation: 'isolate',
+        mixBlendMode: 'normal'
+      }}
+    />
+  );
 };
 
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
@@ -70,12 +170,12 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           >
             <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
               <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center z-10">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#006A71] pr-2 line-clamp-2">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#0E0E0E] pr-2 line-clamp-2">
                   {product.name.replace(/\d{6,}/g, '').replace(/\s{2,}/g, ' ').trim() || product.name}
                 </h2>
                 <button
                   onClick={onClose}
-                  className="text-gray-500 hover:text-gray-700 active:text-gray-900 transition-colors flex-shrink-0 touch-manipulation"
+                  className="text-[#6B6F72] hover:text-[#0E0E0E] active:text-[#0E0E0E] transition-colors flex-shrink-0 touch-manipulation"
                   aria-label="Chiudi"
                 >
                   <X className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -84,21 +184,24 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
               <div className="p-4 sm:p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                  <div className="bg-white">
-                    <img
-                      src={product.image_url}
+                  <div 
+                    className="bg-[#F4F7F6]"
+                    style={{
+                      backgroundColor: '#F4F7F6',
+                      background: '#F4F7F6',
+                      backgroundImage: 'none'
+                    }}
+                  >
+                    <LocalImageWithFallback
+                      shopifyUrl={product.image_url}
                       alt={product.name}
-                      className="w-full h-auto rounded-lg object-cover bg-white"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg?auto=compress&cs=tinysrgb&w=800';
-                      }}
+                      className="w-full h-auto rounded-lg object-cover"
                     />
                   </div>
 
                   <div className="flex flex-col">
                     <div className="mb-3 sm:mb-4 flex flex-wrap gap-2">
-                      <span className="inline-block bg-[#9ACBD0] text-[#006A71] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                      <span className="inline-block bg-[#00D9CC] text-[#0E0E0E] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                         {product.category?.startsWith('Ricambi - ') 
                           ? product.category.replace('Ricambi - ', '')
                           : product.category}
@@ -111,11 +214,11 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     </div>
 
                     <div className="mb-4 sm:mb-6">
-                      <p className="text-2xl sm:text-3xl font-bold text-[#006A71] mb-3 sm:mb-4">
+                      <p className="text-2xl sm:text-3xl font-bold text-[#0E0E0E] mb-3 sm:mb-4">
                         €{product.price.toLocaleString()}
                       </p>
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Descrizione</h3>
-                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+                      <h3 className="text-base sm:text-lg font-semibold text-[#0E0E0E] mb-2">Descrizione</h3>
+                      <p className="text-sm sm:text-base text-[#0E0E0E] leading-relaxed whitespace-pre-line">
                         {product.description}
                       </p>
                     </div>
@@ -135,7 +238,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                             e.stopPropagation();
                             handleAddToCart();
                           }}
-                          className="w-full bg-[#006A71] hover:bg-[#48A6A7] active:bg-[#005a61] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors touch-manipulation"
+                          className="w-full bg-[#00D9CC] hover:bg-[#1FA9A0] active:bg-[#1FA9A0] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-colors touch-manipulation"
                         >
                           Aggiungi al Carrello
                         </button>

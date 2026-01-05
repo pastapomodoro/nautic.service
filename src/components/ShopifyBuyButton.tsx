@@ -158,11 +158,11 @@ export default function ShopifyBuyButton({ productId, productHandle, className }
                 },
                 button: {
                   ':hover': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
-                  'background-color': '#15a7a7',
+                  'background-color': '#00D9CC',
                   ':focus': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
                   'width': '100%',
                 },
@@ -226,11 +226,11 @@ export default function ShopifyBuyButton({ productId, productHandle, className }
                 },
                 button: {
                   ':hover': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
-                  'background-color': '#15a7a7',
+                  'background-color': '#00D9CC',
                   ':focus': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
                 },
                 title: {
@@ -267,11 +267,11 @@ export default function ShopifyBuyButton({ productId, productHandle, className }
               styles: {
                 button: {
                   ':hover': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
-                  'background-color': '#15a7a7',
+                  'background-color': '#00D9CC',
                   ':focus': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
                 },
               },
@@ -283,12 +283,12 @@ export default function ShopifyBuyButton({ productId, productHandle, className }
             toggle: {
               styles: {
                 toggle: {
-                  'background-color': '#15a7a7',
+                  'background-color': '#00D9CC',
                   ':hover': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
                   ':focus': {
-                    'background-color': '#139696',
+                    'background-color': '#1FA9A0',
                   },
                 },
               },
@@ -302,9 +302,9 @@ export default function ShopifyBuyButton({ productId, productHandle, className }
               <a href="https://nautica-5-0.myshopify.com/products/${productHandle}" 
                  target="_blank" 
                  rel="noopener noreferrer"
-                 style="display: inline-block; background-color: #15a7a7; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background-color 0.3s;"
-                 onmouseover="this.style.backgroundColor='#139696'"
-                 onmouseout="this.style.backgroundColor='#15a7a7'">
+                 style="display: inline-block; background-color: #00D9CC; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background-color 0.3s;"
+                 onmouseover="this.style.backgroundColor='#1FA9A0'"
+                 onmouseout="this.style.backgroundColor='#00D9CC'">
                 Acquista
               </a>
             `;
@@ -346,7 +346,7 @@ export default function ShopifyBuyButton({ productId, productHandle, className }
         href={`https://nautica-5-0.myshopify.com/products/${productHandle}`}
         target="_blank"
         rel="noopener noreferrer"
-        className={`bg-[#15a7a7] hover:bg-[#139696] text-white px-4 py-2 rounded-lg flex items-center justify-center transition-colors ${className || ''}`}
+        className={`bg-[#00D9CC] hover:bg-[#1FA9A0] text-white px-4 py-2 rounded-lg flex items-center justify-center transition-colors ${className || ''}`}
       >
         Acquista
       </a>

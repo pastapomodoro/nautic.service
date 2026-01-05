@@ -148,25 +148,25 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
 
   if (itemCount === 0) {
     return (
-      <div className="bg-[#F2EFE7] min-h-screen">
+      <div className="bg-[#F4F7F6] min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <button
             onClick={() => onNavigate('home')}
-            className="mb-6 text-[#006A71] hover:text-[#48A6A7] font-semibold flex items-center gap-2"
+            className="mb-6 text-[#0E0E0E] hover:text-[#00D9CC] font-semibold flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" /> Torna alla Home
           </button>
           <div className="bg-white rounded-lg shadow-lg p-12 text-center">
             <ShoppingCart className="h-24 w-24 text-gray-300 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-[#006A71] mb-4">Il tuo carrello è vuoto</h2>
-            <p className="text-gray-600 mb-8">
+            <h2 className="text-3xl font-bold text-[#0E0E0E] mb-4">Il tuo carrello è vuoto</h2>
+            <p className="text-[#6B6F72] mb-8">
               Aggiungi alcuni prodotti al carrello per iniziare lo shopping
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => onNavigate('ricambi')}
-              className="bg-[#006A71] hover:bg-[#48A6A7] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+              className="bg-[#00D9CC] hover:bg-[#1FA9A0] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
             >
               Vai allo Shopping
             </motion.button>
@@ -177,11 +177,11 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
   }
 
   return (
-    <div className="bg-[#F2EFE7] min-h-screen">
+    <div className="bg-[#F4F7F6] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <button
           onClick={() => onNavigate('home')}
-          className="mb-6 text-[#006A71] hover:text-[#48A6A7] font-semibold flex items-center gap-2"
+          className="mb-6 text-[#0E0E0E] hover:text-[#00D9CC] font-semibold flex items-center gap-2"
         >
           <ArrowLeft className="h-4 w-4" /> Torna alla Home
         </button>
@@ -190,7 +190,7 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
           {/* Lista prodotti */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h2 className="text-2xl font-bold text-[#006A71] mb-6">
+              <h2 className="text-2xl font-bold text-[#0E0E0E] mb-6">
                 Carrello ({itemCount} {itemCount === 1 ? 'prodotto' : 'prodotti'})
               </h2>
               <div className="space-y-4">
@@ -210,8 +210,8 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
                       }}
                     />
                     <div className="flex-grow">
-                      <h3 className="font-semibold text-[#006A71] mb-1">{item.name}</h3>
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">{item.description}</p>
+                      <h3 className="font-semibold text-[#0E0E0E] mb-1">{item.name}</h3>
+                      <p className="text-sm text-[#6B6F72] line-clamp-2 mb-2">{item.description}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <button
@@ -229,7 +229,7 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
                           </button>
                         </div>
                         <div className="flex items-center gap-4">
-                          <span className="font-bold text-[#006A71]">
+                          <span className="font-bold text-[#0E0E0E]">
                             €{(item.price * item.quantity).toLocaleString()}
                           </span>
                           <button
@@ -256,20 +256,20 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
           {/* Riepilogo ordine */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
-              <h2 className="text-2xl font-bold text-[#006A71] mb-6">Riepilogo Ordine</h2>
+              <h2 className="text-2xl font-bold text-[#0E0E0E] mb-6">Riepilogo Ordine</h2>
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotale</span>
+                  <span className="text-[#6B6F72]">Subtotale</span>
                   <span className="font-semibold">€{total.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Spedizione</span>
+                  <span className="text-[#6B6F72]">Spedizione</span>
                   <span className="font-semibold">Calcolata al checkout</span>
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex justify-between">
-                    <span className="text-lg font-bold text-[#006A71]">Totale</span>
-                    <span className="text-lg font-bold text-[#006A71]">€{total.toLocaleString()}</span>
+                    <span className="text-lg font-bold text-[#0E0E0E]">Totale</span>
+                    <span className="text-lg font-bold text-[#0E0E0E]">€{total.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -282,7 +282,7 @@ export default function Checkout({ onNavigate }: CheckoutProps) {
                 whileTap={{ scale: 0.98 }}
                 onClick={handleCheckout}
                 disabled={isLoading || items.length === 0}
-                className="w-full bg-[#006A71] hover:bg-[#48A6A7] disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-[#00D9CC] hover:bg-[#1FA9A0] disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>

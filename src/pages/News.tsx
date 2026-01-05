@@ -55,11 +55,11 @@ export default function News() {
 
   if (selectedArticle) {
     return (
-      <div className="bg-[#F2EFE7] min-h-screen">
+      <div className="bg-[#F4F7F6] min-h-screen">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
           <button
             onClick={() => setSelectedArticle(null)}
-            className="mb-4 sm:mb-6 text-[#006A71] hover:text-[#48A6A7] active:text-[#005a61] font-semibold flex items-center gap-2 text-sm sm:text-base touch-manipulation"
+            className="mb-4 sm:mb-6 text-[#0E0E0E] hover:text-[#00D9CC] active:text-[#0E0E0E] font-semibold flex items-center gap-2 text-sm sm:text-base touch-manipulation"
           >
             <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 rotate-180" />
             Torna alle News
@@ -71,14 +71,14 @@ export default function News() {
               style={{ backgroundImage: `url(${selectedArticle.image_url})` }}
             />
             <div className="p-4 sm:p-6 md:p-8">
-              <div className="flex items-center text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4">
+              <div className="flex items-center text-[#6B6F72] text-xs sm:text-sm mb-3 sm:mb-4">
                 <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                 <span>{formatDate(selectedArticle.published_at)}</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#006A71] mb-4 sm:mb-6">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#0E0E0E] mb-4 sm:mb-6">
                 {selectedArticle.title}
               </h1>
-              <div className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+              <div className="text-sm sm:text-base md:text-lg text-[#0E0E0E] leading-relaxed whitespace-pre-line">
                 {selectedArticle.content}
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function News() {
   }
 
   return (
-    <div className="bg-[#F2EFE7] min-h-screen">
+    <div className="bg-[#F4F7F6] min-h-screen">
       <div
         className="relative h-[250px] sm:h-[300px] md:h-[350px] bg-cover bg-center"
         style={{
@@ -97,7 +97,7 @@ export default function News() {
             'url(https://images.pexels.com/photos/1430676/pexels-photo-1430676.jpeg?auto=compress&cs=tinysrgb&w=1920)',
         }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/70"></div>
         <div className="relative h-full flex items-center justify-center text-center text-white px-4">
           <div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">News</h1>
@@ -111,11 +111,11 @@ export default function News() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#006A71]"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#00D9CC]"></div>
           </div>
         ) : articles.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow-lg">
-            <p className="text-lg sm:text-xl text-gray-600">
+            <p className="text-lg sm:text-xl text-[#6B6F72]">
               Nessuna notizia disponibile al momento. Torna presto per le ultime novità dal mondo nautico.
             </p>
           </div>
@@ -132,17 +132,17 @@ export default function News() {
                     style={{ backgroundImage: `url(${articles[0].image_url})` }}
                   />
                   <div className="p-4 sm:p-6 md:p-8 flex flex-col justify-center">
-                    <div className="flex items-center text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">
+                    <div className="flex items-center text-[#6B6F72] text-xs sm:text-sm mb-2 sm:mb-3">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                       <span>{formatDate(articles[0].published_at)}</span>
                     </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#006A71] mb-3 sm:mb-4">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0E0E0E] mb-3 sm:mb-4">
                       {articles[0].title}
                     </h2>
-                    <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
+                    <p className="text-sm sm:text-base md:text-lg text-[#0E0E0E] mb-4 sm:mb-6 leading-relaxed">
                       {articles[0].excerpt}
                     </p>
-                    <div className="flex items-center text-[#006A71] hover:text-[#48A6A7] active:text-[#005a61] font-semibold text-sm sm:text-base">
+                    <div className="flex items-center text-[#0E0E0E] hover:text-[#00D9CC] active:text-[#0E0E0E] font-semibold text-sm sm:text-base">
                       Leggi di più
                       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 ml-2" />
                     </div>
@@ -163,17 +163,17 @@ export default function News() {
                     style={{ backgroundImage: `url(${article.image_url})` }}
                   />
                   <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
-                    <div className="flex items-center text-gray-600 text-xs sm:text-sm mb-2">
+                    <div className="flex items-center text-[#6B6F72] text-xs sm:text-sm mb-2">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                       <span>{formatDate(article.published_at)}</span>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-[#006A71] mb-2 sm:mb-3">
+                    <h3 className="text-lg sm:text-xl font-bold text-[#0E0E0E] mb-2 sm:mb-3">
                       {article.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4 line-clamp-3 flex-grow">
+                    <p className="text-sm sm:text-base text-[#0E0E0E] mb-3 sm:mb-4 line-clamp-3 flex-grow">
                       {article.excerpt}
                     </p>
-                    <div className="flex items-center text-[#006A71] hover:text-[#48A6A7] active:text-[#005a61] font-semibold text-xs sm:text-sm">
+                    <div className="flex items-center text-[#0E0E0E] hover:text-[#00D9CC] active:text-[#0E0E0E] font-semibold text-xs sm:text-sm">
                       Leggi di più
                       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 ml-2" />
                     </div>

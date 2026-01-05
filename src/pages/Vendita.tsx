@@ -63,7 +63,7 @@ export default function Vendita({ onNavigate }: VenditaProps) {
       : products.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="bg-[#F2EFE7] min-h-screen">
+    <div className="bg-[#F4F7F6] min-h-screen">
       <div
         className="relative h-[300px] bg-cover bg-center"
         style={{
@@ -71,7 +71,7 @@ export default function Vendita({ onNavigate }: VenditaProps) {
             'url(https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1920)',
         }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/70"></div>
         <div className="relative h-full flex items-center justify-center text-center text-white px-4">
           <div>
             <h1 className="text-5xl md:text-6xl font-bold">Vendita</h1>
@@ -91,8 +91,8 @@ export default function Vendita({ onNavigate }: VenditaProps) {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-colors touch-manipulation ${
                   selectedCategory === category
-                    ? 'bg-[#006A71] text-white'
-                    : 'bg-white text-[#006A71] hover:bg-[#9ACBD0] active:bg-[#9ACBD0]'
+                    ? 'bg-[#00D9CC] text-white'
+                    : 'bg-white text-[#0E0E0E] hover:bg-[#1FA9A0] active:bg-[#00D9CC]'
                 }`}
               >
                 {category === 'all' ? 'Tutti' : category}
@@ -103,7 +103,7 @@ export default function Vendita({ onNavigate }: VenditaProps) {
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#006A71]"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#00D9CC]"></div>
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow-lg">
@@ -136,7 +136,7 @@ export default function Vendita({ onNavigate }: VenditaProps) {
                     />
                     <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow min-h-0">
                       <div className="flex items-start justify-between mb-1.5 sm:mb-2 flex-shrink-0">
-                        <h3 className="text-base sm:text-lg font-bold text-[#006A71] line-clamp-2 flex-1 pr-2">
+                        <h3 className="text-base sm:text-lg font-bold text-[#0E0E0E] line-clamp-2 flex-1 pr-2">
                           {cleanName || product.name}
                         </h3>
                         {product.in_stock && (
@@ -151,7 +151,7 @@ export default function Vendita({ onNavigate }: VenditaProps) {
                       </p>
                       <div className="flex flex-col gap-2 sm:gap-3 mt-auto flex-shrink-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-lg sm:text-xl font-bold text-[#006A71]">
+                          <span className="text-lg sm:text-xl font-bold text-[#0E0E0E]">
                             €{product.price.toLocaleString()}
                           </span>
                         </div>
@@ -161,7 +161,7 @@ export default function Vendita({ onNavigate }: VenditaProps) {
                             setSelectedProduct(product);
                             setIsModalOpen(true);
                           }}
-                          className="bg-[#006A71] hover:bg-[#48A6A7] active:bg-[#005a61] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-medium flex items-center justify-center gap-2 transition-colors touch-manipulation w-full"
+                          className="bg-[#00D9CC] hover:bg-[#1FA9A0] active:bg-[#1FA9A0] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-medium flex items-center justify-center gap-2 transition-colors touch-manipulation w-full"
                         >
                           Acquista
                         </button>
@@ -172,11 +172,11 @@ export default function Vendita({ onNavigate }: VenditaProps) {
               })}
             </div>
 
-            <div className="text-center bg-gradient-to-r from-[#48A6A7] to-[#006A71] rounded-lg p-6 sm:p-8 text-white">
+            <div className="text-center bg-gradient-to-r from-[#00D9CC] to-[#9BE870] rounded-lg p-6 sm:p-8 text-white">
               <h3 className="text-xl sm:text-2xl font-bold mb-2">Non Trovi Quello che Cerchi?</h3>
               <p className="mb-4 sm:mb-6 text-sm sm:text-base">Contattaci per una consulenza personalizzata o per ordini speciali</p>
               <button
-                className="bg-white text-[#006A71] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 active:bg-gray-200 transition-colors touch-manipulation"
+                className="bg-white text-[#0E0E0E] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-[#F4F7F6] active:bg-[#9BE870]/20 transition-colors touch-manipulation"
               >
                 Contattaci
               </button>
