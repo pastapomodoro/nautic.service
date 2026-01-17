@@ -54,6 +54,7 @@ export default function Footer() {
 
         <div className="border-t border-[#00D9CC] mt-8 pt-8 text-center text-sm">
           <p>&copy; 2025 Nautic Service. Tutti i diritti riservati.</p>
+          <p className="mt-2">P.IVA: 04616350239</p>
         </div>
       </div>
     </footer>

@@ -48,6 +48,11 @@ function App() {
     <div className="min-h-screen flex flex-col bg-[#F4F7F6]">
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
       <main className="flex-grow">{renderPage()}</main>
+      <img
+        src="/loghi/rotax.png"
+        alt="Rotax Logo"
+        className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+      />
       <Footer />
     </div>
   );
